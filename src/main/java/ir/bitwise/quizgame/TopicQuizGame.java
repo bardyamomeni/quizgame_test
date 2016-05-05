@@ -12,6 +12,7 @@ public class TopicQuizGame extends QuizGame{
         super(quizGameIo);
     }
 
+
     private static class Builder extends QuizGame.Builder<TopicQuizGame>{
         protected String topicId;
 
@@ -19,8 +20,6 @@ public class TopicQuizGame extends QuizGame{
             this.topicId = topicId;
             return this;
         }
-
-
 
         public TopicQuizGame build() {
 
