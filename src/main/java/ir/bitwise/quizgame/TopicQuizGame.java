@@ -12,9 +12,6 @@ public class TopicQuizGame extends QuizGame{
         super(quizGameIo);
     }
 
-
-
-
     private static class Builder extends QuizGame.Builder<TopicQuizGame>{
         protected String topicId;
 
