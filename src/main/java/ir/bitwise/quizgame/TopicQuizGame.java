@@ -8,8 +8,8 @@ import ir.bitwise.quizgame.model.Answer;
  */
 public class TopicQuizGame extends QuizGame{
 
-    protected TopicQuizGame(Void v) {
-        super(v);
+    protected TopicQuizGame(QuizGameIo quizGameIo) {
+        super(quizGameIo);
     }
 
     private static class Builder extends QuizGame.Builder<TopicQuizGame>{
@@ -21,6 +21,7 @@ public class TopicQuizGame extends QuizGame{
         }
 
         public TopicQuizGame build() {
+
             return null;
         }
     }

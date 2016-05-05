@@ -8,9 +8,11 @@ import ir.bitwise.quizgame.model.Answer;
  */
 public abstract class QuizGame {
 
-    protected QuizGame(Void v){
-    }
+    private QuizGameIo quizGameIo;
 
+    protected QuizGame(QuizGameIo quizGameIo){
+        this.quizGameIo = quizGameIo;
+    }
 
     protected static abstract class Builder<T extends QuizGame>{
 
