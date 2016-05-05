@@ -26,6 +26,7 @@ public abstract class QuizGame {
             return this;
         }
 
+
         public abstract T build();
     }
 
