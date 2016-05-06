@@ -12,6 +12,8 @@ import ir.bitwise.quizgame.spi.topic.model.TopicQuizGameCreateResponse;
  */
 public class TopicQuizGame extends QuizGame<TopicQuizGameCreateResponse,TopicGameStartResponse,TopicGameAnswerResponse> {
 
+
+
     String topic;
 
     TopicQuizGame(Builder builder) {
