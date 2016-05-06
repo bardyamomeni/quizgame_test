@@ -1,7 +1,6 @@
 package ir.bitwise.quizgame.spi.topic.spi.turnbased;
 
 
-import ir.bitwise.quizgame.CallBackGroup;
 import ir.bitwise.quizgame.callbacks.AnswerCallback;
 import ir.bitwise.quizgame.callbacks.CreateCallback;
 import ir.bitwise.quizgame.callbacks.StartCallback;
@@ -22,12 +21,16 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
     String opponentId;
 
     protected TurnBasedTopicQuizGame(TurnBasedGameBuilder builder) {
-        super(builder.callBackGroup, builder.gameIo, builder.userId, builder.topicId);
+        super(builder.gameIo, builder.userId, builder.topicId);
+        setCreateCallback(builder.createCallback);
+        setStartCallback(builder.startCallback);
+        setAnswerCallback(builder.answerCallback);
         this.opponentId = builder.opponentId;
         this.builder = builder;
     }
 
     public void create() {
+
         getQuizGameIo().createRequest(null);
     }
 
@@ -67,7 +70,6 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
     }
 
     public static class TurnBasedGameBuilder {
-        CallBackGroup<TBCreateResponse, TBStartResponse, TBAnswerResponse> callBackGroup;
         CreateCallback<TBCreateResponse> createCallback;
         StartCallback<TBStartResponse> startCallback;
         AnswerCallback<TBAnswerResponse> answerCallback;
@@ -124,9 +126,7 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
             return this;
         }
 
-
         public TurnBasedTopicQuizGame build() {
-            this.callBackGroup = new CallBackGroup<>(createCallback, startCallback, answerCallback);
             TurnBasedTopicQuizGame game = new TurnBasedTopicQuizGame(this);
             gameIo.setIoListener(game);
             gameIo.setParser(new TurnBaseGameResponseParser());
