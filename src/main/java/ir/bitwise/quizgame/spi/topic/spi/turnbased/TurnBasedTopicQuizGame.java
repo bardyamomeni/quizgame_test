@@ -124,6 +124,7 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
             return this;
         }
 
+
         public TurnBasedTopicQuizGame build() {
             this.callBackGroup = new CallBackGroup<>(createCallback, startCallback, answerCallback);
             TurnBasedTopicQuizGame game = new TurnBasedTopicQuizGame(this);
