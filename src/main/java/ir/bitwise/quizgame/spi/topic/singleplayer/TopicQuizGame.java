@@ -1,22 +1,20 @@
-package ir.bitwise.quizgame.spi.topic;
+package ir.bitwise.quizgame.spi.topic.singleplayer;
 
 import ir.bitwise.quizgame.QuizGame;
 import ir.bitwise.quizgame.callbacks.*;
 import ir.bitwise.quizgame.model.Answer;
-import ir.bitwise.quizgame.spi.topic.model.TopicGameAnswerResponse;
-import ir.bitwise.quizgame.spi.topic.model.TopicGameStartResponse;
-import ir.bitwise.quizgame.spi.topic.model.TopicQuizGameCreateResponse;
+import ir.bitwise.quizgame.spi.topic.singleplayer.model.TopicGameAnswerResponse;
+import ir.bitwise.quizgame.spi.topic.singleplayer.model.TopicGameStartResponse;
+import ir.bitwise.quizgame.spi.topic.singleplayer.model.TopicQuizGameCreateResponse;
 
 /**
  * Created by Bardya on 5/5/2016.
  */
 public class TopicQuizGame extends QuizGame<TopicQuizGameCreateResponse,TopicGameStartResponse,TopicGameAnswerResponse> {
 
-
-
     String topic;
 
-    TopicQuizGame(Builder builder) {
+    protected TopicQuizGame(TopicQuizGameBuilder builder) {
         super(builder);
         this.topic = builder.getTopic();
     }

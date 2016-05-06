@@ -1,4 +1,4 @@
-package ir.bitwise.quizgame.spi.topic.model;
+package ir.bitwise.quizgame.spi.topic.singleplayer.model;
 
 /**
  * Created by Bardya on 5/6/2016.

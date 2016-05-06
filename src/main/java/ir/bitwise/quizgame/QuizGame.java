@@ -24,12 +24,6 @@ public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        if (this.userId == null)
-            this.userId = userId;
-        else throw new RuntimeException("User ID cannot change");
-    }
-
     public abstract void create(CreateCallback<CreateResponse> callback);
 
     public abstract void start(StartCallback<StartResponse> startCallback);
