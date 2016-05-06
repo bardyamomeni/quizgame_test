@@ -1,8 +1,8 @@
 package ir.bitwise.quizgame.test;
 
-import ir.bitwise.quizgame.TopicQuizGame;
-import ir.bitwise.quizgame.TopicQuizGameBuilder;
-import ir.bitwise.quizgame.TopicQuizGameCreateResponse;
+import ir.bitwise.quizgame.spi.topic.TopicQuizGame;
+import ir.bitwise.quizgame.spi.topic.Builder;
+import ir.bitwise.quizgame.spi.topic.model.TopicQuizGameCreateResponse;
 import ir.bitwise.quizgame.callbacks.CreateCallback;
 
 /**
@@ -12,7 +12,7 @@ public class Test {
 
     public Test() {
 
-        TopicQuizGame topicQuizGame = new TopicQuizGameBuilder().userId("x").topic("y").build();
+        TopicQuizGame topicQuizGame = new Builder().userId("x").topic("y").build();
 
         topicQuizGame.create(new CreateCallback<TopicQuizGameCreateResponse>() {
 

@@ -5,10 +5,17 @@ package ir.bitwise.quizgame;
  */
 public abstract class QuizGameBuilder<T extends QuizGameBuilder<T>> {
 
-    String userId;
+    protected String userId;
+
+    protected QuizGameIo io;
 
     public T userId(String userId){
         this.userId = userId;
+        return getThis();
+    }
+
+    public T gameIo(QuizGameIo io){
+        this.io = io;
         return getThis();
     }
 
