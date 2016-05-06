@@ -1,6 +1,8 @@
 package ir.bitwise.quizgame;
 
-import ir.bitwise.quizgame.callbacks.*;
+import ir.bitwise.quizgame.callbacks.AnswerCallback;
+import ir.bitwise.quizgame.callbacks.CreateCallback;
+import ir.bitwise.quizgame.callbacks.StartCallback;
 import ir.bitwise.quizgame.model.Answer;
 
 /**
@@ -10,10 +12,24 @@ public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
 
     private QuizGameIo quizGameIo;
     private String userId;
+    private CreateCallback<CreateResponse> createCallback;
+    private StartCallback<StartResponse> startCallback;
+    private AnswerCallback<AnswerResponse> answerCallback;
 
-    protected QuizGame(QuizGameBuilder builder) {
-        this.quizGameIo = builder.io;
-        this.userId = builder.userId;
+    protected QuizGame(QuizGameIo io, String userId) {
+
+    }
+
+    public CreateCallback<CreateResponse> getCreateCallback() {
+        return createCallback;
+    }
+
+    public StartCallback<StartResponse> getStartCallback() {
+        return startCallback;
+    }
+
+    public AnswerCallback<AnswerResponse> getAnswerCallback() {
+        return answerCallback;
     }
 
     public QuizGameIo getQuizGameIo() {
@@ -24,13 +40,13 @@ public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
         return userId;
     }
 
-    public abstract void create(CreateCallback<CreateResponse> callback);
+    public abstract void create();
 
-    public abstract void start(StartCallback<StartResponse> startCallback);
+    public abstract void start();
 
-    public abstract void answer(Answer answer, AnswerCallback<AnswerResponse> answerCallback);
+    public abstract void answer(Answer answer);
 
-    public abstract void skip(SkipCallback skipCallback);
+    public abstract void skip();
 
-    public abstract void cancel(CancelCallback cancelCallback);
+    public abstract void cancel();
 }
