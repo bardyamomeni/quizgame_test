@@ -3,6 +3,8 @@ package ir.bitwise.quizgame;
 import ir.bitwise.quizgame.callbacks.AnswerCallback;
 import ir.bitwise.quizgame.callbacks.CreateCallback;
 import ir.bitwise.quizgame.callbacks.StartCallback;
+import ir.bitwise.quizgame.io.QuizGameIo;
+import ir.bitwise.quizgame.io.QuizGameIoListener;
 import ir.bitwise.quizgame.model.Answer;
 
 /**
@@ -10,13 +12,13 @@ import ir.bitwise.quizgame.model.Answer;
  */
 public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
 
-    private QuizGameIo quizGameIo;
+    private QuizGameIo<CreateResponse,StartResponse,AnswerResponse> quizGameIo;
     private String userId;
     private CreateCallback<CreateResponse> createCallback;
     private StartCallback<StartResponse> startCallback;
     private AnswerCallback<AnswerResponse> answerCallback;
 
-    protected QuizGame(CallBackGroup<CreateResponse, StartResponse, AnswerResponse> callbacks, QuizGameIo io, String userId) {
+    protected QuizGame(CallBackGroup<CreateResponse, StartResponse, AnswerResponse> callbacks, QuizGameIo<CreateResponse,StartResponse,AnswerResponse> io, String userId) {
         this.createCallback = callbacks.getCreateCallback();
         this.startCallback = callbacks.getStartCallback();
         this.answerCallback = callbacks.getAnswerCallback();
@@ -53,4 +55,5 @@ public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
     public abstract void skip();
 
     public abstract void cancel();
+
 }

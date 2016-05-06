@@ -2,7 +2,7 @@ package ir.bitwise.quizgame.spi.topic;
 
 import ir.bitwise.quizgame.CallBackGroup;
 import ir.bitwise.quizgame.QuizGame;
-import ir.bitwise.quizgame.QuizGameIo;
+import ir.bitwise.quizgame.io.QuizGameIo;
 
 /**
  * Created by Bardya on 5/5/2016.

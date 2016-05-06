@@ -2,10 +2,11 @@ package ir.bitwise.quizgame.spi.topic.spi.turnbased;
 
 
 import ir.bitwise.quizgame.CallBackGroup;
-import ir.bitwise.quizgame.QuizGameIo;
 import ir.bitwise.quizgame.callbacks.AnswerCallback;
 import ir.bitwise.quizgame.callbacks.CreateCallback;
 import ir.bitwise.quizgame.callbacks.StartCallback;
+import ir.bitwise.quizgame.io.QuizGameIo;
+import ir.bitwise.quizgame.io.QuizGameIoListener;
 import ir.bitwise.quizgame.model.Answer;
 import ir.bitwise.quizgame.spi.topic.TopicQuizGame;
 import ir.bitwise.quizgame.spi.topic.spi.turnbased.model.TBAnswerResponse;
@@ -15,7 +16,7 @@ import ir.bitwise.quizgame.spi.topic.spi.turnbased.model.TBStartResponse;
 /**
  * Created by Bardya on 5/6/2016.
  */
-public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBStartResponse, TBAnswerResponse> {
+public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBStartResponse, TBAnswerResponse> implements QuizGameIoListener<TBCreateResponse, TBStartResponse, TBAnswerResponse> {
 
     private final TurnBasedGameBuilder builder;
     String opponentId;
@@ -27,7 +28,7 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
     }
 
     public void create() {
-
+        getQuizGameIo().createRequest(null);
     }
 
     public void start() {
@@ -50,6 +51,21 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
         return new TurnBasedGameBuilder(builder);
     }
 
+    @Override
+    public void onCreateResponse(TBCreateResponse tbCreateResponse) {
+
+    }
+
+    @Override
+    public void onStartResponse(TBStartResponse tbStartResponse) {
+
+    }
+
+    @Override
+    public void onAnswerResponse(TBAnswerResponse tbAnswerResponse) {
+
+    }
+
     public static class TurnBasedGameBuilder {
         CallBackGroup<TBCreateResponse, TBStartResponse, TBAnswerResponse> callBackGroup;
         CreateCallback<TBCreateResponse> createCallback;
@@ -58,7 +74,7 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
         String userId;
         String topicId;
         String opponentId;
-        QuizGameIo gameIo;
+        QuizGameIo<TBCreateResponse, TBStartResponse, TBAnswerResponse> gameIo;
 
         private TurnBasedGameBuilder(TurnBasedGameBuilder builder) {
             this.createCallback = builder.createCallback;
@@ -73,7 +89,7 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
         public TurnBasedGameBuilder() {
         }
 
-        public TurnBasedGameBuilder io(QuizGameIo io) {
+        public TurnBasedGameBuilder io(QuizGameIo<TBCreateResponse, TBStartResponse, TBAnswerResponse> io) {
             this.gameIo = io;
             return this;
         }
@@ -108,10 +124,12 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
             return this;
         }
 
-
         public TurnBasedTopicQuizGame build() {
             this.callBackGroup = new CallBackGroup<>(createCallback, startCallback, answerCallback);
-            return new TurnBasedTopicQuizGame(this);
+            TurnBasedTopicQuizGame game = new TurnBasedTopicQuizGame(this);
+            gameIo.setIoListener(game);
+            gameIo.setParser(new TurnBaseGameResponseParser());
+            return game;
         }
     }
 }

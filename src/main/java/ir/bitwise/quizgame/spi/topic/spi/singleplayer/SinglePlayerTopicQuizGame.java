@@ -1,6 +1,6 @@
 package ir.bitwise.quizgame.spi.topic.spi.singleplayer;
 
-import ir.bitwise.quizgame.QuizGameIo;
+import ir.bitwise.quizgame.io.QuizGameIo;
 import ir.bitwise.quizgame.model.Answer;
 import ir.bitwise.quizgame.spi.topic.TopicQuizGame;
 import ir.bitwise.quizgame.spi.topic.spi.singleplayer.model.SPAnswerResponse;
