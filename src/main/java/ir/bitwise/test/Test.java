@@ -1,4 +1,4 @@
-package ir.bitwise.quizgame.test;
+package ir.bitwise.test;
 
 import ir.bitwise.quizgame.callbacks.AnswerCallback;
 import ir.bitwise.quizgame.callbacks.CreateCallback;
