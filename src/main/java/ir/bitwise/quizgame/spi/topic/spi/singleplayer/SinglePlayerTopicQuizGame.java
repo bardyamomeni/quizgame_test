@@ -13,7 +13,7 @@ import ir.bitwise.quizgame.spi.topic.spi.singleplayer.model.SPStartResponse;
 public class SinglePlayerTopicQuizGame extends TopicQuizGame<SPCreateResponse,SPStartResponse,SPAnswerResponse>{
 
     protected SinglePlayerTopicQuizGame(QuizGameIo io,String userId,String topic) {
-        super(io,userId,topic);
+        super(null,null,null,null);
     }
 
     public void create() {

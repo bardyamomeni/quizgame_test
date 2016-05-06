@@ -16,8 +16,12 @@ public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
     private StartCallback<StartResponse> startCallback;
     private AnswerCallback<AnswerResponse> answerCallback;
 
-    protected QuizGame(QuizGameIo io, String userId) {
-
+    protected QuizGame(CallBackGroup<CreateResponse, StartResponse, AnswerResponse> callbacks, QuizGameIo io, String userId) {
+        this.createCallback = callbacks.getCreateCallback();
+        this.startCallback = callbacks.getStartCallback();
+        this.answerCallback = callbacks.getAnswerCallback();
+        this.quizGameIo = io;
+        this.userId = userId;
     }
 
     public CreateCallback<CreateResponse> getCreateCallback() {
