@@ -9,40 +9,40 @@ import ir.bitwise.quizgame.model.Answer;
 /**
  * Created by Bardya on 5/5/2016.
  */
-public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
+public abstract class QuizGame {
 
-    private QuizGameIo<CreateResponse, StartResponse, AnswerResponse> quizGameIo;
+    private QuizGameIo quizGameIo;
     private String userId;
-    private CreateCallback<CreateResponse> createCallback;
-    private StartCallback<StartResponse> startCallback;
-    private AnswerCallback<AnswerResponse> answerCallback;
+    private CreateCallback createCallback;
+    private StartCallback startCallback;
+    private AnswerCallback answerCallback;
 
-    protected QuizGame(QuizGameIo<CreateResponse, StartResponse, AnswerResponse> io, String userId) {
+    protected QuizGame(QuizGameIo io, String userId) {
         this.quizGameIo = io;
         this.userId = userId;
     }
 
-    public CreateCallback<CreateResponse> getCreateCallback() {
+    public CreateCallback getCreateCallback() {
         return createCallback;
     }
 
-    public void setCreateCallback(CreateCallback<CreateResponse> createCallback) {
+    public void setCreateCallback(CreateCallback createCallback) {
         this.createCallback = createCallback;
     }
 
-    public StartCallback<StartResponse> getStartCallback() {
+    public StartCallback getStartCallback() {
         return startCallback;
     }
 
-    public void setStartCallback(StartCallback<StartResponse> startCallback) {
+    public void setStartCallback(StartCallback startCallback) {
         this.startCallback = startCallback;
     }
 
-    public AnswerCallback<AnswerResponse> getAnswerCallback() {
+    public AnswerCallback getAnswerCallback() {
         return answerCallback;
     }
 
-    public void setAnswerCallback(AnswerCallback<AnswerResponse> answerCallback) {
+    public void setAnswerCallback(AnswerCallback answerCallback) {
         this.answerCallback = answerCallback;
     }
 
@@ -54,11 +54,11 @@ public abstract class QuizGame<CreateResponse, StartResponse, AnswerResponse> {
         return userId;
     }
 
-    public abstract void create();
+    public abstract <T> void create(CreateCallback<T> callback);
 
-    public abstract void start();
+    public abstract <T> void start(StartCallback<T> startCallback);
 
-    public abstract void answer(Answer answer);
+    public abstract <T> void answer(Answer answer, AnswerCallback<T> answerCallback);
 
     public abstract void skip();
 

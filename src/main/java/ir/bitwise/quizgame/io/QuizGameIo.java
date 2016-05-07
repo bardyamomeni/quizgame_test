@@ -1,46 +1,38 @@
 package ir.bitwise.quizgame.io;
 
+import ir.bitwise.quizgame.io.parser.Parser;
 import ir.bitwise.quizgame.model.KeyValueBundle;
 
 /**
  * Created by Bardya on 5/5/2016.
  */
-public abstract class QuizGameIo<C, S, A> {
+public abstract class QuizGameIo {
 
-    QuizGameIoListener<C, S, A> ioListener;
-    Parser<C, S, A> parser;
+    public <T> void createRequest(KeyValueBundle bundle, final Parser<T> parser, final ParseListener<T> parseListener) {
+        createRequestImpl(bundle, new ResponseListener() {
+            @Override
+            public void onIoResponse(String jsonResponse) {
+                parser.parseData(jsonResponse,parseListener);
+            }
 
-    public QuizGameIoListener<C, S, A> getIoListener() {
-        return ioListener;
+            @Override
+            public void onIoError(Throwable e) {
+                parseListener.onIoError(e);
+            }
+        });
     }
 
-    public void setIoListener(QuizGameIoListener<C, S, A> ioListener) {
-        this.ioListener = ioListener;
+    public void startRequest(KeyValueBundle bundle,ResponseListener responseListener) {
+        startRequestImpl(bundle,responseListener);
     }
 
-    public Parser<C, S, A> getParser() {
-        return parser;
+    public void answerRequest(KeyValueBundle bundle,ResponseListener responseListener) {
+        answerRequestImpl(bundle,responseListener);
     }
 
-    public void setParser(Parser<C, S, A> parser) {
-        this.parser = parser;
-    }
+    protected abstract void createRequestImpl(KeyValueBundle bundle,ResponseListener responseListener);
 
-    public void createRequest(KeyValueBundle bundle) {
-        ioListener.onCreateResponse(parser.parseCreateResponse(createRequestImpl(bundle)));
-    }
+    protected abstract void startRequestImpl(KeyValueBundle bundle,ResponseListener responseListener);
 
-    public void startRequest(KeyValueBundle bundle) {
-        ioListener.onStartResponse(parser.parseStartResponse(startRequestImpl(bundle)));
-    }
-
-    public void answerRequest(KeyValueBundle bundle) {
-        ioListener.onAnswerResponse(parser.parseAnswerResponse(answerRequestImpl(bundle)));
-    }
-
-    protected abstract String createRequestImpl(KeyValueBundle bundle);
-
-    protected abstract String startRequestImpl(KeyValueBundle bundle);
-
-    protected abstract String answerRequestImpl(KeyValueBundle bundle);
+    protected abstract void answerRequestImpl(KeyValueBundle bundle,ResponseListener responseListener);
 }

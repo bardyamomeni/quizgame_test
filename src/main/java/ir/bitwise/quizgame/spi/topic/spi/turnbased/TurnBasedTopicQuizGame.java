@@ -4,8 +4,8 @@ package ir.bitwise.quizgame.spi.topic.spi.turnbased;
 import ir.bitwise.quizgame.callbacks.AnswerCallback;
 import ir.bitwise.quizgame.callbacks.CreateCallback;
 import ir.bitwise.quizgame.callbacks.StartCallback;
-import ir.bitwise.quizgame.io.QuizGameIo;
-import ir.bitwise.quizgame.io.QuizGameIoListener;
+import ir.bitwise.quizgame.io.ParseListener;
+import ir.bitwise.quizgame.io.parser.Parser;
 import ir.bitwise.quizgame.model.Answer;
 import ir.bitwise.quizgame.spi.topic.TopicQuizGame;
 import ir.bitwise.quizgame.spi.topic.spi.turnbased.model.TBAnswerResponse;
@@ -15,12 +15,12 @@ import ir.bitwise.quizgame.spi.topic.spi.turnbased.model.TBStartResponse;
 /**
  * Created by Bardya on 5/6/2016.
  */
-public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBStartResponse, TBAnswerResponse> implements QuizGameIoListener<TBCreateResponse, TBStartResponse, TBAnswerResponse> {
+public class TurnBasedTopicQuizGame extends TopicQuizGame  {
 
-    private final TurnBasedGameBuilder builder;
+    private final TurnBaseQuizGameBuilder builder;
     String opponentId;
 
-    protected TurnBasedTopicQuizGame(TurnBasedGameBuilder builder) {
+    protected TurnBasedTopicQuizGame(TurnBaseQuizGameBuilder builder) {
         super(builder.gameIo, builder.userId, builder.topicId);
         setCreateCallback(builder.createCallback);
         setStartCallback(builder.startCallback);
@@ -29,16 +29,34 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
         this.builder = builder;
     }
 
-    public void create() {
+    @Override
+    public <T> void create(final CreateCallback<T> callback) {
+        getQuizGameIo().createRequest(null, new CreateResponseParser(), new ParseListener<TBCreateResponse>() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onParsedData(TBCreateResponse parsedObject) {
+                callback.onCreated((T) parsedObject);
+            }
 
-        getQuizGameIo().createRequest(null);
+            @Override
+            public void onParsingError(Throwable error) {
+
+            }
+
+            @Override
+            public void onIoError(Throwable error) {
+
+            }
+        });
     }
 
-    public void start() {
+    @Override
+    public <T> void start(StartCallback<T> startCallback) {
 
     }
 
-    public void answer(Answer answer) {
+    @Override
+    public <T> void answer(Answer answer, AnswerCallback<T> answerCallback) {
 
     }
 
@@ -50,87 +68,31 @@ public class TurnBasedTopicQuizGame extends TopicQuizGame<TBCreateResponse, TBSt
 
     }
 
-    public TurnBasedGameBuilder newBuilder() {
-        return new TurnBasedGameBuilder(builder);
+    public TurnBaseQuizGameBuilder newBuilder() {
+        return new TurnBaseQuizGameBuilder(builder);
     }
 
-    @Override
-    public void onCreateResponse(TBCreateResponse tbCreateResponse) {
+    private class CreateResponseParser extends Parser<TBCreateResponse> {
 
+        @Override
+        public void parseData(String input, ParseListener<TBCreateResponse> parseListener) {
+            parseListener.onParsedData(new TBCreateResponse());
+        }
     }
 
-    @Override
-    public void onStartResponse(TBStartResponse tbStartResponse) {
+    private class StartResponseParser extends Parser<TBStartResponse>{
 
+        @Override
+        public void parseData(String input, ParseListener<TBStartResponse> parseListener) {
+            parseListener.onParsedData(new TBStartResponse());
+        }
     }
 
-    @Override
-    public void onAnswerResponse(TBAnswerResponse tbAnswerResponse) {
+    private class AnswerResponseParser extends Parser<TBAnswerResponse>{
 
-    }
-
-    public static class TurnBasedGameBuilder {
-        CreateCallback<TBCreateResponse> createCallback;
-        StartCallback<TBStartResponse> startCallback;
-        AnswerCallback<TBAnswerResponse> answerCallback;
-        String userId;
-        String topicId;
-        String opponentId;
-        QuizGameIo<TBCreateResponse, TBStartResponse, TBAnswerResponse> gameIo;
-
-        private TurnBasedGameBuilder(TurnBasedGameBuilder builder) {
-            this.createCallback = builder.createCallback;
-            this.startCallback = builder.startCallback;
-            this.answerCallback = builder.answerCallback;
-            this.userId = builder.userId;
-            this.topicId = builder.topicId;
-            this.opponentId = builder.opponentId;
-            this.gameIo = builder.gameIo;
-        }
-
-        public TurnBasedGameBuilder() {
-        }
-
-        public TurnBasedGameBuilder io(QuizGameIo<TBCreateResponse, TBStartResponse, TBAnswerResponse> io) {
-            this.gameIo = io;
-            return this;
-        }
-
-        public TurnBasedGameBuilder userId(String userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public TurnBasedGameBuilder topicId(String topicId) {
-            this.topicId = topicId;
-            return this;
-        }
-
-        public TurnBasedGameBuilder opponentId(String opponentId) {
-            this.opponentId = opponentId;
-            return this;
-        }
-
-        public TurnBasedGameBuilder createCallback(CreateCallback<TBCreateResponse> callback) {
-            this.createCallback = callback;
-            return this;
-        }
-
-        public TurnBasedGameBuilder startCallback(StartCallback<TBStartResponse> callback) {
-            this.startCallback = callback;
-            return this;
-        }
-
-        public TurnBasedGameBuilder answerCallback(AnswerCallback<TBAnswerResponse> callback) {
-            this.answerCallback = callback;
-            return this;
-        }
-
-        public TurnBasedTopicQuizGame build() {
-            TurnBasedTopicQuizGame game = new TurnBasedTopicQuizGame(this);
-            gameIo.setIoListener(game);
-            gameIo.setParser(new TurnBaseGameResponseParser());
-            return game;
+        @Override
+        public void parseData(String input, ParseListener<TBAnswerResponse> parseListener) {
+            parseListener.onParsedData(new TBAnswerResponse());
         }
     }
 }
